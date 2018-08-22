@@ -1,0 +1,37 @@
+﻿@model int[,]
+
+<table>
+    @if (Model != null)
+    {
+        for (int i = 0; i <= Math.Sqrt(Model.Length) - 1; i++)
+        {
+            <tr>
+                @for (int j = 0; j <= Math.Sqrt(Model.Length) - 1; j++)
+                {
+                    <td>{@Model[i, j]}</td>
+                }
+            </tr>
+        }
+    }
+</table>
+
+<br />
+<button onclick="location.href='@Url.Action("Generate", "Home")'">Сгенерировать матрицу</button>
+<button onclick="location.href='@Url.Action("RotateRight", "Home")'" @(Model == null ? "disabled='disabled'" : "")>Повернуть матрицу вправо</button>
+<button onclick="location.href='@Url.Action("RotateLeft", "Home")'" @(Model == null ? "disabled='disabled'" : "")>Повернуть матрицу влево</button>
+
+<br />
+<br />
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{   
+    <input type="file" name="postedFile" id="fileUploader" onchange="javascript:this.form.submit();" accept=".csv" style="position: fixed; top: -100em">
+}
+
+<label for="inputId"><button onclick="document.getElementById('fileUploader').click()">Загрузить матрицу</button></label>
+<button onclick="location.href='@Url.Action("Export", "Home")'" @(Model == null ? "disabled='disabled'" : "")>Экспорт</button>
+
+
+<br />
+@Html.Raw(HttpUtility.HtmlDecode((Html.ValidationSummary(false, "", new { @class = "exception" })).ToHtmlString()))
+
+
